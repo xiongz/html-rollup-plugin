@@ -30,7 +30,7 @@ export default (opt = {}) => {
 		name: 'html',
 		writeBundle(config, data) {
 			const isHTML = /^.*<html>.*<\/html>$/.test(template);
-			const $ = cheerio.load(isHTML?template:readFileSync(template).toString());
+			const $ = cheerio.load(isHTML?template:readFileSync(template).toString(), {decodeEntities: false});
 			const head = $('head');
 			const body = $('body');
 			let entryConfig = {};
