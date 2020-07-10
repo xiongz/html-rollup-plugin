@@ -1,0 +1,25 @@
+{
+  "name": "html-rollup-plugin",
+  "version": "1.0.0",
+  "description": "simplifies creation of html files to serve your rollup bundles",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xiongz/html-rollup-plugin.git"
+  },
+  "main": "lib/index.js",
+  "keywords": [
+    "rollup",
+    "plugin",
+    "html",
+    "html-rollup-plugin"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "hasha": "^5.2.0"
+  }
+}
