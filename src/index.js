@@ -34,7 +34,6 @@ export default (opt = {}) => {
 			const head = $('head');
 			const body = $('body');
 			let entryConfig = {};
-			console.log('writeBundle', config, data)
 			Object.values(config).forEach((c) => {
 				if (c && c.isEntry) entryConfig = c
 			})
