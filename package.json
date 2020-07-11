@@ -1,6 +1,6 @@
 {
   "name": "html-rollup-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "simplifies creation of html files to serve your rollup bundles",
   "repository": {
     "type": "git",
