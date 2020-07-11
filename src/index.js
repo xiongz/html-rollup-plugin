@@ -33,7 +33,7 @@ function collapseWhitespaceAll(str) {
 }
 
 export default (opt = {}) => {
-	const { template, filename, externals, inject, dest, absolute, ignore, onlinePath, defer } = opt;
+	const { template, filename, externals, inject, dest, absolute, ignore, onlinePath, favicon, defer } = opt;
 
 	return {
 		name: 'html',
@@ -115,9 +115,9 @@ export default (opt = {}) => {
                     src += '?t=' + (new Date()).getTime();
 				}
 
-				if (config.favicon) {
-					const favicon = `<link rel="shortcut icon" href="${config.favicon}">`
-					head.append(favicon)
+				if (favicon) {
+					const faviconTmp = `<link rel="shortcut icon" href="${favicon}">`
+					head.append(faviconTmp)
 				}
 
 				if (type === 'js') {
