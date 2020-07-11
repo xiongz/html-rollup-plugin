@@ -23,14 +23,25 @@ function isURL(url){
   return (new RegExp('^(?:[a-z]+:)?//', 'i')).test(url);
 }
 
+function collapseWhitespaceAll(str) {
+	const reg = /("([^\\\"]*(\\.)?)*")|('([^\\\']*(\\.)?)*')|(\/{2,}.*?(\r|\n))|(\/\*(\n|.)*?\*\/)/g; // 正则表达式
+	return str && str.replace(reg, function(word) { // 去除注释后的文本
+		return /^\/{2,}/.test(word) || /^\/\*/.test(word) ? "" : word;
+	}).replace(/[ \n\r\t\f\xA0]+/g, function(spaces) {
+    return spaces === '\t' ? '\t' : spaces.replace(/(^|\xA0+)[^\xA0]+/g, '$1 ');
+  })
+}
+
 export default (opt = {}) => {
-	const { template, filename, externals, inject, dest, absolute, ignore, onlinePath } = opt;
+	const { template, filename, externals, inject, dest, absolute, ignore, onlinePath, defer } = opt;
 
 	return {
 		name: 'html',
 		writeBundle(config, data) {
 			const isHTML = /^.*<html>.*<\/html>$/.test(template);
-			const $ = cheerio.load(isHTML?template:readFileSync(template).toString(), {decodeEntities: false});
+			let html = isHTML?template:readFileSync(template).toString();
+			html = collapseWhitespaceAll(html)
+			const $ = cheerio.load(html, {decodeEntities: false});
 			const head = $('head');
 			const body = $('body');
 			let entryConfig = {};
@@ -104,8 +115,16 @@ export default (opt = {}) => {
                     src += '?t=' + (new Date()).getTime();
 				}
 
+				if (config.favicon) {
+					const favicon = `<link rel="shortcut icon" href="${config.favicon}">`
+					head.append(favicon)
+				}
+
 				if (type === 'js') {
-					const script = `<script type="text/javascript" src="${src}"></script>\n`;
+					let script = `<script type="text/javascript" src="${src}"></script>\n`;
+					if (defer) {
+						script = script.replace('type="text/javascript"', 'type="text/javascript" defer')
+					}
 					// node.inject will cover the inject
 					if (node.inject === 'head' || inject === 'head') {
 						head.append(script);
@@ -116,6 +135,7 @@ export default (opt = {}) => {
 					head.append(`<link rel="stylesheet" href="${src}">\n`);
 				}
 			});
+			
 			writeFileSync(destFile, $.html());
 		}
 	};
