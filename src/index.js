@@ -111,9 +111,9 @@ export default (opt = {}) => {
 					const slash = onlinePath.slice(-1) === '/' ? '' : '/';
 					src = onlinePath + slash + filename;
 				}
-				if (node.timestamp) {
-                    src += '?t=' + (new Date()).getTime();
-				}
+				// if (node.timestamp) {
+        src += '?t=' + (new Date()).getTime();
+				// }
 
 				if (favicon) {
 					const faviconTmp = `<link rel="shortcut icon" href="${favicon}">`
